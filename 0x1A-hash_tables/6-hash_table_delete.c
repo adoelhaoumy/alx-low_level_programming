@@ -2,29 +2,28 @@
 
 /**
  * hash_table_delete - Deletes a hash table.
- * @ht: A pointer to a hash table.
+ * @ht: Pointer to the hash table.
  */
 void hash_table_delete(hash_table_t *ht)
 {
-	hash_table_t *head = ht;
-	hash_node_t *node, *tmp;
 	unsigned long int i;
+	hash_node_t *tmp, *delete;
 
-	for (i = 0; i < ht->size; i++)
+	if (ht)
 	{
-		if (ht->array[i] != NULL)
+		for (i = 0; i < ht->size; i++)
 		{
-			node = ht->array[i];
-			while (node != NULL)
+			tmp = ht->array[i];
+			while (tmp)
 			{
-				tmp = node->next;
-				free(node->key);
-				free(node->value);
-				free(node);
-				node = tmp;
+				delete = tmp;
+				tmp = tmp->next;
+				free(delete->key);
+				free(delete->value);
+				free(delete);
 			}
 		}
+		free(ht->array);
+		free(ht);
 	}
-	free(head->array);
-	free(head);
 }
